@@ -2,6 +2,7 @@ go-zenrows
 ===
 
 [![codecov](https://codecov.io/gh/renatoaraujo/go-zenrows/graph/badge.svg?token=ORVP7TXY4A)](https://codecov.io/gh/renatoaraujo/go-zenrows)
+[![Go Report Card](https://goreportcard.com/badge/github.com/renatoaraujo/go-zenrows)](https://goreportcard.com/report/github.com/renatoaraujo/go-zenrows)
 
 `go-zenrows` is a Go client for the ZenRows API, allowing users to easily scrape web content.
 
