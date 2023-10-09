@@ -50,9 +50,8 @@ jobs:
           PATCH_STRING_TOKEN: "patch:"
           WITH_V: true
 
-      - name: Create Release
-        id: release
-        uses: ncipollo/release-action@v1
+      - uses: marvinpinto/action-automatic-releases@latest
         with:
-          tag: ${{ steps.version.outputs.new_tag }}
-          token: ${{ secrets.RELEASE_TOKEN }}
+          repo_token: "${{ secrets.RELEASE_TOKEN }}"
+          automatic_release_tag: ${{ steps.version.outputs.new_tag }}
+          prerelease: false
