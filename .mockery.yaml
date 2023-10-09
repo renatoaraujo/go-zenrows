@@ -1,5 +1,5 @@
 packages:
-  renatoaraujo/go-zenrows:
+  github.com/renatoaraujo/go-zenrows:
     config:
       all: true
       with-expecter: true
