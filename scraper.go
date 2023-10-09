@@ -1,7 +1,6 @@
 package zenrows
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -21,9 +20,6 @@ func validateFullURL(targetURL string) error {
 	return nil
 }
 
-const jsRenderKey = "js_render"
-const jsInstructionsKey = "js_instructions"
-
 // Scrape fetches content from the specified targetURL using the ZenRows API.
 //
 // The function constructs the API URL based on the provided targetURL and optional ScrapeOptions.
@@ -31,6 +27,8 @@ const jsInstructionsKey = "js_instructions"
 //
 // The function validates the provided targetURL to ensure it's a full URL with both a scheme and a host.
 // It also checks if the 'js_instructions' parameter is set without enabling 'js_render', and returns an error if so.
+//
+// # For now only supports GET method
 //
 // Parameters:
 // - targetURL: The URL of the website you want to scrape.
@@ -59,10 +57,6 @@ func (c *Client) Scrape(targetURL string, params ...ScrapeOptions) (string, erro
 		return "", err
 	}
 
-	if err := validateJSInstructions(apiURL); err != nil {
-		return "", err
-	}
-
 	return c.fetchContent(apiURL)
 }
 
@@ -79,14 +73,6 @@ func (c *Client) constructAPIURL(targetURL string, params ...ScrapeOptions) (*ur
 
 	allParams := append([]ScrapeOptions{addTokenParams}, params...)
 	return ApplyParameters(baseURL, allParams...), nil
-}
-
-func validateJSInstructions(apiURL *url.URL) error {
-	values := apiURL.Query()
-	if values.Get(jsInstructionsKey) != "" && values.Get(jsRenderKey) != "true" {
-		return errors.New("js_instructions is set but js_render is not enabled")
-	}
-	return nil
 }
 
 func (c *Client) fetchContent(apiURL *url.URL) (string, error) {

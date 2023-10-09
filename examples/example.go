@@ -22,8 +22,8 @@ func main() {
   {"wait_for": ".slow_selector"}
 ]
 `
-	// add options, e.g.: add JS rendering with JS instructions; or just call Scrape("http://...")
-	result, err := client.Scrape("https://httpbin.org", zenrows.WithJSRender(true), zenrows.WithJSInstructions(jsInstructions))
+	// add options, e.g.: add JS instructions; or just call Scrape("http://...")
+	result, err := client.Scrape("https://httpbin.org", zenrows.WithJSInstructions(jsInstructions))
 	if err != nil {
 		log.Fatalf("Failed to scrape the target: %v", err)
 	}
