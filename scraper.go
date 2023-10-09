@@ -20,6 +20,7 @@ func validateFullURL(targetURL string) error {
 	return nil
 }
 
+// Scrape Calls the ZenRows API and return the string content
 func (c *Client) Scrape(targetURL string, params ...ScrapeOptions) (string, error) {
 	err := validateFullURL(targetURL)
 	if err != nil {
