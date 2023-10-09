@@ -3,14 +3,14 @@ package zenrows_test
 import (
 	"bytes"
 	"errors"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
 
-	"renatoaraujo/go-zenrows"
-	mocks "renatoaraujo/go-zenrows/mocks"
+	"github.com/renatoaraujo/go-zenrows"
+	mocks "github.com/renatoaraujo/go-zenrows/mocks"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )

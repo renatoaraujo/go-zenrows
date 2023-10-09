@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"renatoaraujo/go-zenrows"
+	"github.com/renatoaraujo/go-zenrows"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"renatoaraujo/go-zenrows"
+	"github.com/renatoaraujo/go-zenrows"
 )
 
 func main() {

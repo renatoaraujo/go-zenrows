@@ -1,4 +1,4 @@
-module renatoaraujo/go-zenrows
+module github.com/renatoaraujo/go-zenrows
 
 go 1.21.1
 
