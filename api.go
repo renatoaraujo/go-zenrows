@@ -3,6 +3,7 @@ package zenrows
 import (
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 // ScrapeOptions Options to be passed to ZenRows api as query string
@@ -12,6 +13,31 @@ type ScrapeOptions func(values url.Values)
 func WithJSRender(value bool) ScrapeOptions {
 	return func(values url.Values) {
 		values.Add("js_render", strconv.FormatBool(value))
+	}
+}
+
+// WithJSInstructions appends JavaScript instructions to the URL query parameters.
+// If WithJSRender is not set or set to false, this function will automatically
+// enable it to ensure JavaScript instructions are executed correctly.
+//
+// Parameters:
+//   - value: JSON string with JavaScript instructions.
+//
+// Returns:
+//   - ScrapeOptions: Function to modify url.Values with instructions.
+//
+// Example:
+//
+//	opt := WithJSInstructions(`[{"click": ".selector"}, {"wait": 500}]`)
+//	values := url.Values{}
+//	opt(values) // This will also ensure "js_render" is set to "true".
+func WithJSInstructions(value string) ScrapeOptions {
+	condensed := strings.Join(strings.Fields(value), "")
+	return func(values url.Values) {
+		if values.Get("js_render") != "true" {
+			values.Set("js_render", "true")
+		}
+		values.Add("js_instructions", condensed)
 	}
 }
 
