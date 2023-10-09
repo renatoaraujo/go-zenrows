@@ -1,8 +1,9 @@
 go-zenrows
 ===
 
-[![codecov](https://codecov.io/gh/renatoaraujo/go-zenrows/graph/badge.svg?token=ORVP7TXY4A)](https://codecov.io/gh/renatoaraujo/go-zenrows)
+[![Go Reference](https://pkg.go.dev/badge/github.com/renatoaraujo/go-zenrows.svg)](https://pkg.go.dev/github.com/renatoaraujo/go-zenrows)
 [![Go Report Card](https://goreportcard.com/badge/github.com/renatoaraujo/go-zenrows)](https://goreportcard.com/report/github.com/renatoaraujo/go-zenrows)
+[![codecov](https://codecov.io/gh/renatoaraujo/go-zenrows/graph/badge.svg?token=ORVP7TXY4A)](https://codecov.io/gh/renatoaraujo/go-zenrows)
 
 `go-zenrows` is a Go client for the ZenRows API, allowing users to easily scrape web content.
 
@@ -37,6 +38,7 @@ fmt.Println("Scraped Content:", r2)
 
 For a detailed list of all available functions and scrape options, refer to the official documentation:
 - [ZenRows docs website](https://www.zenrows.com/docs)
+- [Go docs website](https://pkg.go.dev/github.com/renatoaraujo/go-zenrows)
 
 ## Credits
 
