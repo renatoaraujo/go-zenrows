@@ -19,6 +19,7 @@ func TestScrape(t *testing.T) {
 	tests := []struct {
 		name            string
 		url             string
+		options         []zenrows.ScrapeOptions
 		httpClientSetup func(client *mocks.HttpClient)
 		result          string
 		expectError     bool
@@ -52,6 +53,15 @@ func TestScrape(t *testing.T) {
 			url:         "invalid",
 			expectError: true,
 		},
+		{
+			name: "js_instructions set without js_render",
+			url:  "http://example.com",
+			options: []zenrows.ScrapeOptions{
+				zenrows.WithJSInstructions(`[{}]`),
+				zenrows.WithJSRender(false),
+			},
+			expectError: true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -64,7 +74,7 @@ func TestScrape(t *testing.T) {
 
 			client := zenrows.NewClient(httpClientMock).
 				WithApiKey("key")
-			content, err := client.Scrape(tt.url)
+			content, err := client.Scrape(tt.url, tt.options...)
 
 			if tt.expectError {
 				require.Error(t, err)
