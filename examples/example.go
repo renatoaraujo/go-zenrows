@@ -21,4 +21,12 @@ func main() {
 	}
 
 	fmt.Println("Scraped Content:", result)
+
+	// add JS rendering
+	r2, err := client.Scrape("https://httpbin.org", zenrows.WithJSRender(true))
+	if err != nil {
+		log.Fatalf("Failed to scrape the target: %v", err)
+	}
+
+	fmt.Println("Scraped Content:", r2)
 }
