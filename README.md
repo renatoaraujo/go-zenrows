@@ -30,7 +30,7 @@ hc := &http.Client{
 }
 client := zenrows.NewClient(hc).WithApiKey("YOUR_API_KEY")
 
-r2, err := client.Scrape("https://httpbin.org", zenrows.WithJSRender(true))
+r2, err := client.Scrape("https://httpbin.org", zenrows.WithJSRender())
 if err != nil {
     log.Fatalf("Failed to scrape the target: %v", err)
 }
