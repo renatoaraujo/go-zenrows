@@ -14,6 +14,12 @@ go-zenrows
 - **Various Scrape Options**: Customize your scraping with options like JS rendering, custom headers, session ID, and more.
 - **Examples Included**: A basic example is provided to help you get started quickly.
 
+## Installation
+
+```shell
+go get github.com/renatoaraujo/go-zenrows
+```
+
 ## Usage
 
 Here's a basic example to get you started:
