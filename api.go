@@ -180,6 +180,15 @@ func WithSessionID(sessionID int) ScrapeOptions {
 	}
 }
 
+// WithAIAntiBot sets the anti-bot
+// Some websites protect their content with anti-bot solutions such as Cloudfare, Akamai, or Datadome. Enable Anti-bot to bypass them easily without any hassle.
+func WithAIAntiBot() ScrapeOptions {
+	return func(values url.Values) {
+		values.Set("js_render", "true")
+		values.Set("antibot", "true")
+	}
+}
+
 // ApplyParameters applies the chosen scraping options to a URL.
 // It modifies the URL's query string based on the provided scraping options.
 //

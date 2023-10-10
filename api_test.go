@@ -100,6 +100,11 @@ func TestScrapeOptions(t *testing.T) {
 			zenrows.WithSessionID(12345),
 			url.Values{"session_id": []string{"12345"}},
 		},
+		{
+			"WithAIAntiBot",
+			zenrows.WithAIAntiBot(),
+			url.Values{"js_render": []string{"true"}, "antibot": []string{"true"}},
+		},
 	}
 
 	for _, tt := range tests {
