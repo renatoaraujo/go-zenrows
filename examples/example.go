@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -23,7 +24,7 @@ func main() {
 ]
 `
 	// add options, e.g.: add JS instructions; or just call Scrape("http://...")
-	result, err := client.Scrape("https://httpbin.org", zenrows.WithJSInstructions(jsInstructions))
+	result, err := client.Scrape(context.Background(), "https://httpbin.org", zenrows.WithJSInstructions(jsInstructions))
 	if err != nil {
 		log.Fatalf("Failed to scrape the target: %v", err)
 	}
