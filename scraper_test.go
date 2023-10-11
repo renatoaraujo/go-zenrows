@@ -2,10 +2,12 @@ package zenrows_test
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"io"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/renatoaraujo/go-zenrows"
 	mocks "github.com/renatoaraujo/go-zenrows/mocks"
@@ -18,6 +20,7 @@ import (
 func TestScrape(t *testing.T) {
 	tests := []struct {
 		name            string
+		timeoutDuration time.Duration
 		url             string
 		httpClientSetup func(client *mocks.HttpClient)
 		result          string
@@ -48,6 +51,25 @@ func TestScrape(t *testing.T) {
 			expectError: true,
 		},
 		{
+			name:            "Failed with context timeout",
+			url:             "http://example.com",
+			timeoutDuration: 1 * time.Second,
+			httpClientSetup: func(s *mocks.HttpClient) {
+				s.On("Do", mock.Anything).Return(func(req *http.Request) (*http.Response, error) {
+					select {
+					case <-req.Context().Done():
+						return nil, req.Context().Err()
+					case <-time.After(2 * time.Second):
+						return &http.Response{
+							StatusCode: 200,
+							Body:       io.NopCloser(bytes.NewReader([]byte("some content"))),
+						}, nil
+					}
+				}).Once()
+			},
+			expectError: true,
+		},
+		{
 			name:        "Failed to scrape with valid url",
 			url:         "invalid",
 			expectError: true,
@@ -62,9 +84,16 @@ func TestScrape(t *testing.T) {
 				tt.httpClientSetup(httpClientMock)
 			}
 
+			ctx := context.Background()
+			if tt.timeoutDuration != 0 {
+				var cancel context.CancelFunc
+				ctx, cancel = context.WithTimeout(ctx, tt.timeoutDuration)
+				defer cancel()
+			}
+
 			client := zenrows.NewClient(httpClientMock).
 				WithApiKey("key")
-			content, err := client.Scrape(tt.url)
+			content, err := client.Scrape(ctx, tt.url)
 
 			if tt.expectError {
 				require.Error(t, err)

@@ -1,6 +1,7 @@
 package zenrows
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -31,6 +32,7 @@ func validateFullURL(targetURL string) error {
 // # For now only supports GET method
 //
 // Parameters:
+// - ctx: Context
 // - targetURL: The URL of the website you want to scrape.
 // - params: Optional parameters to customize the scraping process. Refer to ScrapeOptions for available options.
 //
@@ -40,14 +42,20 @@ func validateFullURL(targetURL string) error {
 //
 // Example usage:
 //
-//	content, err := client.Scrape("https://example.com", zenrows.WithJSRender(true))
+//	content, err := client.Scrape(context.Background(), "https://example.com", zenrows.WithJSRender(true))
 //	if err != nil {
 //	    log.Fatalf("Failed to scrape the target: %v", err)
 //	}
 //	fmt.Println("Scraped Content:", content)
 //
 // For more details and examples, refer to the https://pkg.go.dev/github.com/renatoaraujo/go-zenrows and the example provided in the repository https://github.com/renatoaraujo/go-zenrows/blob/main/examples/example.go.
-func (c *Client) Scrape(targetURL string, params ...ScrapeOptions) (string, error) {
+func (c *Client) Scrape(ctx context.Context, targetURL string, params ...ScrapeOptions) (string, error) {
+	select {
+	case <-ctx.Done():
+		return "", ctx.Err()
+	default:
+	}
+
 	if err := validateFullURL(targetURL); err != nil {
 		return "", fmt.Errorf("failed to parse target url: %w", err)
 	}
@@ -57,7 +65,7 @@ func (c *Client) Scrape(targetURL string, params ...ScrapeOptions) (string, erro
 		return "", err
 	}
 
-	return c.fetchContent(apiURL)
+	return c.fetchContent(ctx, apiURL)
 }
 
 func (c *Client) constructAPIURL(targetURL string, params ...ScrapeOptions) (*url.URL, error) {
@@ -75,8 +83,8 @@ func (c *Client) constructAPIURL(targetURL string, params ...ScrapeOptions) (*ur
 	return ApplyParameters(baseURL, allParams...), nil
 }
 
-func (c *Client) fetchContent(apiURL *url.URL) (string, error) {
-	req, err := http.NewRequest(http.MethodGet, apiURL.String(), nil)
+func (c *Client) fetchContent(ctx context.Context, apiURL *url.URL) (string, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, apiURL.String(), nil)
 	if err != nil {
 		return "", fmt.Errorf("failed to create request: %w", err)
 	}
